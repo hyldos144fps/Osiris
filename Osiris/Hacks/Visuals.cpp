@@ -175,7 +175,7 @@ void Visuals::removeVisualRecoil(FrameStage stage) noexcept
         aimPunch = localPlayer->aimPunchAngle();
         viewPunch = localPlayer->viewPunchAngle();
 
-        if (config->visuals.noAimPunch)
+        if (config->visuals.noAimPunch && !config->misc.recoilCrosshair)
             localPlayer->aimPunchAngle() = Vector{ };
 
         if (config->visuals.noViewPunch)

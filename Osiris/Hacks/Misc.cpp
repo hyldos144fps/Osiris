@@ -94,7 +94,7 @@ void Misc::updateClanTag(bool tagChanged) noexcept
             clanTag.push_back(' ');
         return;
     }
-    
+
     static auto lastTime = 0.0f;
 
     if (config->misc.clocktag) {
@@ -201,38 +201,10 @@ void Misc::noscopeCrosshair(ImDrawList* drawList) noexcept
     drawCrosshair(drawList, ImGui::GetIO().DisplaySize / 2, Helpers::calculateColor(config->misc.noscopeCrosshair), config->misc.noscopeCrosshair.thickness);
 }
 
-
-static bool worldToScreen(const Vector& in, ImVec2& out) noexcept
+void Misc::recoilCrosshair() noexcept
 {
-    const auto& matrix = GameData::toScreenMatrix();
-
-    const auto w = matrix._41 * in.x + matrix._42 * in.y + matrix._43 * in.z + matrix._44;
-    if (w < 0.001f)
-        return false;
-
-    out = ImGui::GetIO().DisplaySize / 2.0f;
-    out.x *= 1.0f + (matrix._11 * in.x + matrix._12 * in.y + matrix._13 * in.z + matrix._14) / w;
-    out.y *= 1.0f - (matrix._21 * in.x + matrix._22 * in.y + matrix._23 * in.z + matrix._24) / w;
-    out = ImFloor(out);
-    return true;
-}
-
-void Misc::recoilCrosshair(ImDrawList* drawList) noexcept
-{
-    if (!config->misc.recoilCrosshair.enabled)
-        return;
-
-    GameData::Lock lock;
-    const auto& localPlayerData = GameData::local();
-
-    if (!localPlayerData.exists || !localPlayerData.alive)
-        return;
-
-    if (!localPlayerData.shooting)
-        return;
-
-    if (ImVec2 pos; worldToScreen(localPlayerData.aimPunch, pos))
-        drawCrosshair(drawList, pos, Helpers::calculateColor(config->misc.recoilCrosshair), config->misc.recoilCrosshair.thickness);
+    static auto recoilCrosshair = interfaces->cvar->findVar("cl_crosshair_recoil");
+    recoilCrosshair->setValue(config->misc.recoilCrosshair ? 1 : 0);
 }
 
 void Misc::watermark() noexcept
@@ -329,12 +301,12 @@ void Misc::fastStop(UserCmd* cmd) noexcept
 
     if (cmd->buttons & (UserCmd::IN_MOVELEFT | UserCmd::IN_MOVERIGHT | UserCmd::IN_FORWARD | UserCmd::IN_BACK))
         return;
-    
+
     const auto velocity = localPlayer->velocity();
     const auto speed = velocity.length2D();
     if (speed < 15.0f)
         return;
-    
+
     Vector direction = velocity.toAngle();
     direction.y = cmd->viewangles.y - direction.y;
 

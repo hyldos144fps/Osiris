@@ -98,7 +98,6 @@ static HRESULT __stdcall present(IDirect3DDevice9* device, const RECT* src, cons
     StreamProofESP::render();
     Misc::purchaseList();
     Misc::noscopeCrosshair(ImGui::GetBackgroundDrawList());
-    Misc::recoilCrosshair(ImGui::GetBackgroundDrawList());
 
     if (gui->open)
         gui->render();
@@ -139,6 +138,7 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Misc::antiAfkKick(cmd);
     Misc::fastStop(cmd);
     Misc::prepareRevolver(cmd);
+    Misc::recoilCrosshair();
     Visuals::removeShadows();
     Misc::runReportbot();
     Misc::bunnyHop(cmd);

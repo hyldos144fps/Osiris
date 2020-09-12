@@ -212,6 +212,9 @@ public:
         bool moonwalk{ false };
         bool edgejump{ false };
         bool slowwalk{ false };
+        int slowwalkKey{ 0 };
+        ColorToggleThickness noscopeCrosshair;
+        bool recoilCrosshair{ false };
         bool autoPistol{ false };
         bool autoReload{ false };
         bool autoAccept{ false };
