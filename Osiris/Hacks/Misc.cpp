@@ -201,10 +201,11 @@ void Misc::noscopeCrosshair(ImDrawList* drawList) noexcept
     drawCrosshair(drawList, ImGui::GetIO().DisplaySize / 2, Helpers::calculateColor(config->misc.noscopeCrosshair), config->misc.noscopeCrosshair.thickness);
 }
 
+
 void Misc::recoilCrosshair() noexcept
 {
-    static auto recoilCrosshair = interfaces->cvar->findVar("cl_crosshair_recoil");
-    recoilCrosshair->setValue(config->misc.recoilCrosshair ? 1 : 0);
+  static auto recoilCrosshair = interfaces->cvar->findVar("cl_crosshair_recoil");
+  recoilCrosshair->setValue(config->misc.recoilCrosshair ? 1 : 0);
 }
 
 void Misc::watermark() noexcept
